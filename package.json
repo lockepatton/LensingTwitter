@@ -1,0 +1,28 @@
+{
+  "name": "lensingtwitter",
+  "version": "1.0.0",
+  "description": "A twitter bot to gravitationally lens the astro picture of the day, and any images sent it's way.",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node bot.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lockepatton/LensingTwitter.git"
+  },
+  "keywords": [
+    "gravitational",
+    "lensing",
+    "twitter"
+  ],
+  "author": "Locke Patton",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lockepatton/LensingTwitter/issues"
+  },
+  "homepage": "https://github.com/lockepatton/LensingTwitter#readme",
+  "dependencies": {
+    "twit": "^2.2.9"
+  }
+}
