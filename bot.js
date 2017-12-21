@@ -7,22 +7,34 @@ var fs = require('fs');
 var config = require('./config');
 var T = new Twit(config);
 
-// Running tweetIt every 24 hours
-tweetIt()
-// setInterval(tweetIt, 1000*60*5*60*24) //# of mili-seconds
+const fileExists = require('file-exists');
 
 
-function tweetIt() {
+// Gets APOD Image, and if it exists it will lenses It, and tweet it.
+APODmain()
+// Running APODmain every 24 hours
+setInterval(APODmain, 1000*60*5*60*24) //delay time in mili-seconds
 
-  // Gets APOD Image and Lenses It
-  // Executes this process in python
+
+function APODmain() {
+  // Running lensAPOD.py
   var cmd = 'python ./lensAPOD.py';
   exec(cmd, processing)
+}
 
-  // Once executed, runs processes
-  function processing() {
-    console.log('1: If it exists, the APOD image was found and lensed in Python.')
+// Once executed, runs processing
+function processing() {
+  console.log('1: lensAPOD.py run. If it exists, the APOD image was found and lensed in Python.')
 
+  // Testing if file exists, and if it does, running tweetIt
+  var file = '/Users/lockepatton/LensingTwitter/pictures/AstroPicOfTheDay_Lensed.jpg';
+  fileExists(file, tweetIt)
+}
+
+function tweetIt(err, exists) {
+  console.log(exists);
+  if (exists) {
+    console.log("The file exists. Continuing.")
     // Reading in image
     filename = './pictures/AstroPicOfTheDay_Lensed.jpg'
     var params = {
@@ -34,25 +46,27 @@ function tweetIt() {
     // uploading media to account
     T.post('media/upload', {media_data: b64}, uploaded);
 
-    function uploaded(err, data, response) {
-      if (err) {
-        console.log(err);
-      } else {
-        var id = data.media_id_string;
-        var tweet = {
-          status: '#CodingRainbow',
-          media_ids: [id]
-        }
-        T.post('statuses/update', tweet, tweeted);
-      }
+
+  }
+}
+
+function uploaded(err, data, response) {
+  if (err) {
+    console.log(err);
+  } else {
+    var id = data.media_id_string;
+    var tweet = {
+      status: '#CodingRainbow',
+      media_ids: [id]
+    }
+    T.post('statuses/update', tweet, tweeted);
+  }
+}
+
+function tweeted(err, data, response) {
+    if (err) {
+      console.log("Error appeared!");
+    } else {
+      console.log("3: Tweet successful!");
     }
   }
-
-  function tweeted(err, data, response) {
-      if (err) {
-        console.log("Error appeared!");
-      } else {
-        console.log("3: Tweet successful!");
-      }
-    }
-}
