@@ -57,6 +57,7 @@ try:
         print "could not load : "+img
         print e
         foundImage = False
+
 except Exception as e:
     print "No image found."
     print e
