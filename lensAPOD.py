@@ -7,7 +7,7 @@ import os
 import cookielib
 import json
 
-DIR = "/Users/lockepatton/LensingTwitter/pictures"
+DIR = "./pictures"
 url = "https://apod.nasa.gov/apod/astropix.html"
 # url = "https://apod.nasa.gov/apod/ap171213.html"
 ImageToBeSaved = os.path.join(DIR , "AstroPicOfTheDay.jpg")

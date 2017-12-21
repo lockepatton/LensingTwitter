@@ -26,7 +26,7 @@ function lensAPOD() {
   console.log('1: lensAPOD.py run. If it exists, the APOD image was found and lensed in Python.')
 
   // Testing if file exists, and if it does, running tweetIt
-  var file = '/Users/lockepatton/LensingTwitter/pictures/AstroPicOfTheDay_Lensed.jpg';
+  var file = './pictures/AstroPicOfTheDay_Lensed.jpg';
   fileExists(file, tweetAPOD)
 }
 
@@ -51,7 +51,7 @@ function tweetAPOD(err, exists) {
       } else {
         var id = data.media_id_string;
         var tweet = {
-          status: '#CodingRainbow',
+          status: 'A lensed astro picture of the day! #apod #CodingRainbow',
           media_ids: [id]
         }
         T.post('statuses/update', tweet, tweeted);
