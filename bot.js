@@ -9,69 +9,10 @@ var T = new Twit(config);
 
 const fileExists = require('file-exists');
 
-
-// 1st BOT PROCESS
-
-/* Set Twitter search phrase */
-var TWITTER_SEARCH_PHRASE = '#lensAPOD';
-
-
-
-function LENSmain() {
-
-}
-
-function lensAPOD() {
-
-}
-
-function tweetAPOD() {
-
-}
-
-/* BotRetweet() : To retweet the matching recent tweet */
-// function BotRetweet() {
-//
-// 	var query = {
-// 		q: TWITTER_SEARCH_PHRASE,
-// 		result_type: "recent"
-// 	}
-//
-// 	Bot.get('search/tweets', query, BotGotLatestTweet);
-//
-// 	function BotGotLatestTweet (error, data, response) {
-// 		if (error) {
-// 			console.log('Bot could not find latest tweet, : ' + error);
-// 		}
-// 		else {
-// 			var id = {
-// 				id : data.statuses[0].id_str
-// 			}
-//
-// 			// Bot.post('statuses/retweet/:id', id, BotRetweeted);
-//       //
-// 			// function BotRetweeted(error, response) {
-// 			// 	if (error) {
-// 			// 		console.log('Bot could not retweet, : ' + error);
-// 			// 	}
-// 			// 	else {
-// 			// 		console.log('Bot retweeted : ' + id.id);
-// 			// 	}
-// 			// }
-// 		}
-// 	}
-// }
-//
-
-
-
-
-// 2nd BOT PROCESS
-
 // Gets APOD Image, and if it exists it will lenses It, and tweet it.
 mainAPOD()
 // Running mainAPOD every 24 hours
-setInterval(mainAPOD, 1000*60*5*60*24) //delay time in mili-seconds
+setInterval(mainAPOD, 1000*60*5*60*24) //delay time in milli-seconds
 
 
 function mainAPOD() {
