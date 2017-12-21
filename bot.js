@@ -12,7 +12,7 @@ const fileExists = require('file-exists');
 // Gets APOD Image, and if it exists it will lenses It, and tweet it.
 mainAPOD()
 // Running mainAPOD every 24 hours
-setInterval(mainAPOD, 1000*60*5*60*24) //delay time in milli-seconds
+setInterval(mainAPOD, 1000*60*60*24) //delay time in milli-seconds
 
 
 function mainAPOD() {
