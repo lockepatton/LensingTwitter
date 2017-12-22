@@ -16,10 +16,9 @@ var stream = T.stream('user');
 stream.on('tweet', tweetEvent)
 
 function tweetEvent(eventMsg) {
-  // WRITING JSON TO A FILE
-  var fs = require('fs');
-  var json = JSON.stringify(eventMsg, null,2);
-  fs.writeFile("tweet.json",json);
+  // WRITING eventMsg TO JSON FILE
+  var json = JSON.stringify(eventMsg, null, 2);
+  fs.writeFile("tweet.json", json, (error) => { /* handle error */ });
 
   var AllImages = []
   var AllImages_Lensed = []
@@ -116,7 +115,7 @@ function tweetEvent(eventMsg) {
 // 2nd PROCESS: Lens the AstroPicOfTheDay!
 
 // Gets APOD Image, and if it exists it will lenses It, and tweet it.
-mainAPOD()
+// mainAPOD()
 // Running mainAPOD every 24 hours
 setInterval(mainAPOD, 1000*60*60*24) //delay time in milli-seconds
 
