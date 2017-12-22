@@ -107,7 +107,7 @@ if foundImage:
 
     G = 6.67408 * 10**-11 * u.m**3 /( u.kg * u.s**2)
     c = 3 * 10**8 * u.m / u.s
-    M = 10**16 * u.kg
+    M = random.randint(10**15, 10**16) * u.kg
 
     x_def = random.randint(n_x_pix*1/4,n_x_pix*3/4)
     y_def = random.randint(n_y_pix*1/4,n_y_pix*3/4)
