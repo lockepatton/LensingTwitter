@@ -92,7 +92,7 @@ function tweetEvent(eventMsg) {
         } else {
           var id = data.media_id_string;
           var tweet = {
-            status: '@'+from+' Here\'s some extra gravity for the situation!',
+            status: '@'+from+' Here\'s some extra gravity!',
             media_ids: [id],
             in_reply_to_status_id: nameID
           }
