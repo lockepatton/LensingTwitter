@@ -61,12 +61,12 @@ function tweetEvent(eventMsg) {
     AllImages_Lensed.push('./pictures/Image'+i+'_Lensed.jpg')
   }
 
-  var cmd_removeOldImages = 'rm  ./pictures/Image*';
+  var cmd_removeOldImages = 'rm  ./pictures/Image*Lensed*';
   var cmd = 'python ./lensImage.py ' + AllImages.length + imageLocationStr;
 
   if (AllImages_Lensed.length > 0) {
     // Running all lensing processes lensImage.py for all attached images
-    exec(cmd_removeOldImages,printRemovedImages)
+    // exec(cmd_removeOldImages,printRemovedImages)
     exec(cmd,tweetImages)
   }
 
@@ -129,9 +129,9 @@ setInterval(mainAPOD, 1000*60*60*24) //delay time in milli-seconds
 function mainAPOD() {
   // Running lensAPOD.py
   var cmd = 'python ./lensAPOD.py';
-  var cmd_removeOldImages = 'rm  ./pictures/AstroPicOfTheDay*';
+  var cmd_removeOldImages = 'rm  ./pictures/AstroPicOfTheDay*Lensed*';
 
-  exec(cmd_removeOldImages,printRemovedImages)
+  // exec(cmd_removeOldImages,printRemovedImages)
   exec(cmd, lensAPOD)
 
   function printRemovedImages() {
