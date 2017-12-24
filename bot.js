@@ -57,15 +57,21 @@ function tweetEvent(eventMsg) {
 
   imageLocationStr = ''
   for (i = 0; i < AllImages.length; i++) {
-    imageLocationStr = imageLocationStr+ ' '+AllImages[i]
+    imageLocationStr = imageLocationStr + ' ' + AllImages[i]
     AllImages_Lensed.push('./pictures/Image'+i+'_Lensed.jpg')
   }
 
-  cmd = 'python ./lensImage.py ' + AllImages.length + imageLocationStr
+  var cmd_removeOldImages = 'rm  ./pictures/Image*';
+  var cmd = 'python ./lensImage.py ' + AllImages.length + imageLocationStr;
 
   if (AllImages_Lensed.length > 0) {
     // Running all lensing processes lensImage.py for all attached images
+    exec(cmd_removeOldImages,printRemovedImages)
     exec(cmd,tweetImages)
+  }
+
+  function printRemovedImages() {
+    console.log('Removed old @images.')
   }
 
   function tweetImages() {
@@ -115,7 +121,7 @@ function tweetEvent(eventMsg) {
 // 2nd PROCESS: Lens the AstroPicOfTheDay!
 
 // Gets APOD Image, and if it exists it will lenses It, and tweet it.
-// mainAPOD()
+mainAPOD()
 // Running mainAPOD every 24 hours
 setInterval(mainAPOD, 1000*60*60*24) //delay time in milli-seconds
 
@@ -123,64 +129,74 @@ setInterval(mainAPOD, 1000*60*60*24) //delay time in milli-seconds
 function mainAPOD() {
   // Running lensAPOD.py
   var cmd = 'python ./lensAPOD.py';
+  var cmd_removeOldImages = 'rm  ./pictures/AstroPicOfTheDay*';
+
+  exec(cmd_removeOldImages,printRemovedImages)
   exec(cmd, lensAPOD)
-}
 
-// Once executed, runs processing
-function lensAPOD() {
-  console.log('1: lensAPOD.py run. If it exists, the APOD image was found and lensed in Python.')
+  function printRemovedImages() {
+    console.log('Removed old APOD images.')
+  }
 
-  // Testing if file exists, and if it does, running tweetIt
-  var file = './pictures/AstroPicOfTheDay_Lensed.jpg';
-  fileExists(file, tweetAPOD)
-}
+  // Once executed, runs processing
+  function lensAPOD() {
+    console.log('1: lensAPOD.py run. If it exists, the APOD image was found and lensed in Python.')
 
-function tweetAPOD(err, exists) {
-  console.log(exists);
-  if (exists) {
-    console.log("The file exists. Continuing.")
-    // Reading in image
-    filename = './pictures/AstroPicOfTheDay_Lensed.jpg'
-    var params = {
-      encoding: 'base64'
-    }
-    var b64 = fs.readFileSync(filename, params);
-    console.log('2: Image imported with readFileSync.')
+    // Testing if file exists, and if it does, running tweetIt
+    var file = './pictures/AstroPicOfTheDay_Lensed.jpg';
+    fileExists(file, tweetAPOD)
 
-    // uploading media to account
-    T.post('media/upload', {media_data: b64}, uploaded);
-
-    function uploaded(err, data, response) {
-      if (err) {
-        console.log(err);
-      } else {
-        var id = data.media_id_string;
-        var tweet = {
-          status: 'A gravitationally lensed #astro picture of the day! #apod #CodingRainbow '+ getDateLinkAPOD(),
-          media_ids: [id]
+    function tweetAPOD(err, exists) {
+      console.log(exists);
+      if (exists) {
+        console.log("The file exists. Continuing.")
+        // Reading in image
+        filename = './pictures/AstroPicOfTheDay_Lensed.jpg'
+        var params = {
+          encoding: 'base64'
         }
-        T.post('statuses/update', tweet, tweeted);
+        var b64 = fs.readFileSync(filename, params);
+        console.log('2: Image imported with readFileSync.')
 
-        function tweeted(err, data, response) {
-            if (err) {
-              console.log("Error appeared!");
-              console.log(response);
-            } else {
-              console.log("3: Tweet successful!");
+        // uploading media to account
+        T.post('media/upload', {media_data: b64}, uploaded);
+
+        function uploaded(err, data, response) {
+          if (err) {
+            console.log(err);
+          } else {
+            var id = data.media_id_string;
+            var tweet = {
+              status: 'A gravitationally lensed #astro picture of the day! #apod '+ getDateLinkAPOD(),
+              media_ids: [id]
             }
+
+            function getDateLinkAPOD() {
+              var date = new Date();
+
+              var yearCut = date.getFullYear() - 2000;
+              var month = date.getMonth() + 1;
+              var day = date.getDate() + 1;
+              var siteDite = 'https://apod.nasa.gov/apod/ap'+yearCut +''+ month +''+ day + '.html';
+
+              return siteDite;
+            }
+
+            T.post('statuses/update', tweet, tweeted);
+
+            function tweeted(err, data, response) {
+
+                if (err) {
+                  console.log("Error appeared!");
+                  console.log(response);
+
+                } else {
+                  console.log("3: Tweet successful!");
+                }
+              }
           }
+        }
       }
     }
   }
-}
-
-function getDateLinkAPOD() {
-  var date = new Date();
-
-  var yearCut = date.getFullYear() - 2000;
-  var month = date.getMonth() + 1;
-  var day = date.getDate();
-  var siteDite = 'https://apod.nasa.gov/apod/ap'+yearCut +''+ month +''+ day + '.html';
-
-  return siteDite;
 }
