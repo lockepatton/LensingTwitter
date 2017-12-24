@@ -3,6 +3,7 @@ console.log('The gravitational lensing bot is running.')
 var Twit = require('twit');
 var exec = require('child_process').exec;
 var fs = require('fs');
+var ontime = require('ontime')
 
 var config = require('./config');
 var T = new Twit(config);
@@ -120,12 +121,14 @@ function tweetEvent(eventMsg) {
 
 // 2nd PROCESS: Lens the AstroPicOfTheDay!
 
-// Gets APOD Image, and if it exists it will lenses It, and tweet it.
-mainAPOD()
 // Running mainAPOD every 24 hours
-setInterval(mainAPOD, 1000*60*60*24) //delay time in milli-seconds
+// mainAPOD()
+// setInterval(mainAPOD, 1000*60*60*24) //delay time in milli-seconds
 
+// Post at 5pm every day
+ontime({ cycle: '22:00:00' }, mainAPOD)
 
+// Gets APOD Image, and if it exists it will lenses It, and tweet it.
 function mainAPOD() {
   // Running lensAPOD.py
   var cmd = 'python ./lensAPOD.py';

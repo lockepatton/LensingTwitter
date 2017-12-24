@@ -24,6 +24,7 @@
   "homepage": "https://github.com/lockepatton/LensingTwitter#readme",
   "dependencies": {
     "file-exists": "^5.0.0",
+    "ontime": "0.0.3",
     "twit": "^2.2.9"
   }
 }
