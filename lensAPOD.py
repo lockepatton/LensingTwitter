@@ -6,6 +6,7 @@ import urllib2
 import os
 import cookielib
 import json
+import urllib
 
 DIR = "./pictures"
 url = "https://apod.nasa.gov/apod/astropix.html"
@@ -24,7 +25,7 @@ else:
 
 
 header = {'User-Agent':"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36"}
-soup = get_soup(url,header)
+soup = get_soup(url, header)
 # print soup
 foundImage = True
 
@@ -46,13 +47,8 @@ try:
     img = os.path.join("https://apod.nasa.gov/apod/", image)
 
     try:
-        req = urllib2.Request(img, headers={'User-Agent' : header})
-        raw_img = urllib2.urlopen(req).read()
+        urllib.urlretrieve(img, ImageToBeSaved)
 
-        f = open(ImageToBeSaved, 'wb')
-
-        f.write(raw_img)
-        f.close()
     except Exception as e:
         print "could not load : "+img
         print e

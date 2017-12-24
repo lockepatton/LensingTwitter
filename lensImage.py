@@ -7,6 +7,7 @@ import os
 import cookielib
 import json
 import sys
+import urllib
 
 
 arguments = sys.argv
@@ -27,21 +28,13 @@ for i in range(number_of_images):
     else:
         print "The %s file did not exist." % ImageToBeSaved
 
-    header = {'User-Agent':"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36"}
-
     if not os.path.exists(DIR):
         os.mkdir(DIR)
 
     img = url
 
     try:
-        req = urllib2.Request(img, headers={'User-Agent' : header})
-        raw_img = urllib2.urlopen(req).read()
-
-        f = open(ImageToBeSaved, 'wb')
-
-        f.write(raw_img)
-        f.close()
+        urllib.urlretrieve(img, ImageToBeSaved)
         foundImage = 1
 
     except Exception as e:
