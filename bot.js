@@ -1,14 +1,13 @@
 console.log('The gravitational lensing bot is running.')
 
-var Twit = require('twit');
-var exec = require('child_process').exec;
-var fs = require('fs');
-var ontime = require('ontime')
-
-var config = require('./config');
-var T = new Twit(config);
-
+const Twit = require('twit');
+const exec = require('child_process').exec;
+const fs = require('fs');
+const ontime = require('ontime');
 const fileExists = require('file-exists');
+
+const config = require('./config');
+const T = new Twit(config);
 
 // 1st PROCESS: Reply with lensed images!
 
@@ -54,21 +53,23 @@ function tweetEvent(eventMsg) {
   }
 
   console.log(AllImages)
-  console.log('successfully found images');
+  console.log('successfully checked images');
 
   imageLocationStr = ''
   for (i = 0; i < AllImages.length; i++) {
     imageLocationStr = imageLocationStr + ' ' + AllImages[i]
-    AllImages_Lensed.push('./pictures/Image'+i+'_Lensed.jpg')
+    AllImages_Lensed.push('./pictures/Image' + i + '_Lensed.jpg')
   }
 
   var cmd_removeOldImages = 'rm  ./pictures/Image*Lensed*';
   var cmd = 'python ./lensImage.py ' + AllImages.length + imageLocationStr;
 
+  console.log(cmd)
+
   if (AllImages_Lensed.length > 0) {
     // Running all lensing processes lensImage.py for all attached images
     // exec(cmd_removeOldImages,printRemovedImages)
-    exec(cmd,tweetImages)
+    exec(cmd, tweetImages)
   }
 
   function printRemovedImages() {
@@ -82,7 +83,7 @@ function tweetEvent(eventMsg) {
 
     for (i = 0; i < AllImages_Lensed.length; i++) {
       // Reading in image
-      filename = AllImages_Lensed[i]
+      var filename = AllImages_Lensed[i]
       var params = {
         encoding: 'base64'
       }
@@ -90,7 +91,9 @@ function tweetEvent(eventMsg) {
       console.log('2: Image imported with readFileSync.')
 
       // uploading media to account
-      T.post('media/upload', {media_data: b64}, uploaded);
+      T.post('media/upload', {
+        media_data: b64
+      }, uploaded);
 
       function uploaded(err, data, response) {
         if (err) {
@@ -98,20 +101,20 @@ function tweetEvent(eventMsg) {
         } else {
           var id = data.media_id_string;
           var tweet = {
-            status: '@'+from+' Some extra gravity on the situation!',
+            status: '@' + from,
             media_ids: [id],
             in_reply_to_status_id: nameID
           }
           T.post('statuses/update', tweet, tweeted);
 
           function tweeted(err, data, response) {
-              if (err) {
-                console.log("Error appeared!");
-                console.log(response);
-              } else {
-                console.log("3: Tweet successful!");
-              }
+            if (err) {
+              console.log("Error appeared!");
+              console.log(response);
+            } else {
+              console.log("3: Tweet successful!");
             }
+          }
         }
       }
     }
@@ -122,19 +125,23 @@ function tweetEvent(eventMsg) {
 // 2nd PROCESS: Lens the AstroPicOfTheDay!
 
 // Running mainAPOD every 24 hours
-// mainAPOD()
+mainAPOD()
 // setInterval(mainAPOD, 1000*60*60*24) //delay time in milli-seconds
 
-// Post at 5pm every day
-ontime({ cycle: '22:00:00' }, mainAPOD)
+// Post at 10pm PST every day
+ontime({
+  cycle: '6:00:00'
+}, mainAPOD)
 
 // Gets APOD Image, and if it exists it will lenses It, and tweet it.
 function mainAPOD() {
+  console.log('running mainAPOD')
   // Running lensAPOD.py
   var cmd = 'python ./lensAPOD.py';
   var cmd_removeOldImages = 'rm  ./pictures/AstroPicOfTheDay*Lensed*';
 
   // exec(cmd_removeOldImages,printRemovedImages)
+  console.log(cmd)
   exec(cmd, lensAPOD)
 
   function printRemovedImages() {
@@ -143,6 +150,7 @@ function mainAPOD() {
 
   // Once executed, runs processing
   function lensAPOD() {
+    console.log('running lensAPOD')
     console.log('1: lensAPOD.py run. If it exists, the APOD image was found and lensed in Python.')
 
     // Testing if file exists, and if it does, running tweetIt
@@ -162,7 +170,9 @@ function mainAPOD() {
         console.log('2: Image imported with readFileSync.')
 
         // uploading media to account
-        T.post('media/upload', {media_data: b64}, uploaded);
+        T.post('media/upload', {
+          media_data: b64
+        }, uploaded);
 
         function uploaded(err, data, response) {
           if (err) {
@@ -170,7 +180,7 @@ function mainAPOD() {
           } else {
             var id = data.media_id_string;
             var tweet = {
-              status: 'A gravitationally lensed #astro picture of the day! #apod '+ getDateLinkAPOD(),
+              status: 'A gravitationally lensed #astronomy picture of the day! #apod ' + getDateLinkAPOD(),
               media_ids: [id]
             }
 
@@ -180,7 +190,10 @@ function mainAPOD() {
               var yearCut = date.getFullYear() - 2000;
               var month = date.getMonth() + 1;
               var day = date.getDate() + 1;
-              var siteDite = 'https://apod.nasa.gov/apod/ap'+yearCut +''+ month +''+ day + '.html';
+              var formattedMonth = ("0" + month).slice(-2);
+              var formattedDay = ("0" + day).slice(-2);
+              
+              var siteDite = 'https://apod.nasa.gov/apod/ap' + yearCut + '' + formattedMonth + '' + formattedDay + '.html';
 
               return siteDite;
             }
@@ -189,14 +202,14 @@ function mainAPOD() {
 
             function tweeted(err, data, response) {
 
-                if (err) {
-                  console.log("Error appeared!");
-                  console.log(response);
+              if (err) {
+                console.log("Error appeared!");
+                console.log(response);
 
-                } else {
-                  console.log("3: Tweet successful!");
-                }
+              } else {
+                console.log("3: Tweet successful!");
               }
+            }
           }
         }
       }
