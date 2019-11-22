@@ -138,3 +138,5 @@ def run_lensAPOD():
 
         LensedImageToBeSaved = os.path.join(DIR, "AstroPicOfTheDay_Lensed.jpg")
         misc.imsave(LensedImageToBeSaved, image2)
+
+        return theta_E_val * d_s_val / (plate_scale_val)

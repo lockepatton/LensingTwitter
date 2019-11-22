@@ -18,7 +18,7 @@ file = './pictures/AstroPicOfTheDay_Lensed.jpg'
 
 def run_bot():
     # pulling down image and lensing it
-    # lensAPOD.run_lensAPOD()
+    EinsteinRadius = lensAPOD.run_lensAPOD()
 
     # finding object title
     url = "https://apod.nasa.gov/apod/astropix.html"
@@ -44,20 +44,19 @@ def run_bot():
     day = '{:02d}'.format(now.day)
     day_month_year = '{}{}{}'.format(year, month, day)
 
-    status = "A gravitationally lensed "+title+"! #Astronomy picture of the day. https://apod.nasa.gov/apod/ap"+day_month_year+'.html'
+    status = "A gravitationally lensed "+title+", with an Einstein radius of "+str(int(EinsteinRadius))+" pixels. #Astronomy #SciCom https://apod.nasa.gov/apod/ap"+day_month_year+'.html'
     # status = "A gravitationally lensed #astronomy picture of the day! https://apod.nasa.gov/apod/ap"+day_month_year+'.html'
     print(status)
     return status
 
-status = run_bot()
 
-# INTERVAL = 60 * 60 * 24  # every 24 hours
-# INTERVAL = 15  # every 15 seconds, for testing
-#
-# while True:
-#     print("About to run...")
-#
-#     status = run_bot()
-#     api.update_with_media(file, status=status)
-#
-#     time.sleep(INTERVAL)
+INTERVAL = 60 * 60 * 24  # every 24 hours
+# INTERVAL = 60  # every 15 seconds, for testing
+
+while True:
+    print("About to run...")
+
+    status = run_bot()
+    api.update_with_media(file, status=status)
+
+    time.sleep(INTERVAL)
