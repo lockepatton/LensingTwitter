@@ -3,3 +3,4 @@ numpy==1.11.1
 tweepy==3.8.0
 scipy==0.18.1
 matplotlib==1.5.3
+beautifulsoup4==4.6.0                   
