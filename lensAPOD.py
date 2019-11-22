@@ -18,7 +18,6 @@ def get_soup(url, header):
 
 # GRAVITATIONAL LENSING
 import numpy as np
-import matplotlib.pyplot as plt
 from scipy import misc
 import astropy.units as u
 import random

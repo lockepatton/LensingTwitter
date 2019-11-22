@@ -16,7 +16,7 @@ number_of_images = int(arguments[1])
 for i in range(number_of_images):
     print 'running download and lens script on image #', i
 
-    url = arguments[i + 2]
+    url = arguments[i+2]
     ImageToBeSaved = os.path.join(DIR, "Image" + str(i) + ".jpg")
     LensedImageToBeSaved = os.path.join(DIR, "Image" + str(i) + "_Lensed.jpg")
 
@@ -43,7 +43,6 @@ for i in range(number_of_images):
 
     # GRAVITATIONAL LENSING
     import numpy as np
-    import matplotlib.pyplot as plt
     from scipy import misc
     import astropy.units as u
     import random
