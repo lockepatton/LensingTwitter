@@ -15,6 +15,8 @@ var stream = T.stream('user');
 
 stream.on('tweet', tweetEvent)
 
+console.log('Stream on.')
+
 function tweetEvent(eventMsg) {
   // WRITING eventMsg TO JSON FILE
   var json = JSON.stringify(eventMsg, null, 2);
@@ -124,14 +126,16 @@ function tweetEvent(eventMsg) {
 
 // 2nd PROCESS: Lens the AstroPicOfTheDay!
 
-// Running mainAPOD every 24 hours
+// Posting when running lensAPOD.py
 mainAPOD()
+
+// Posting every 24 hours
 // setInterval(mainAPOD, 1000*60*60*24) //delay time in milli-seconds
 
 // Post at 10pm PST every day
-ontime({
-  cycle: '6:00:00'
-}, mainAPOD)
+// ontime({
+//   cycle: '6:00:00'
+// }, mainAPOD)
 
 // Gets APOD Image, and if it exists it will lenses It, and tweet it.
 function mainAPOD() {
@@ -192,7 +196,7 @@ function mainAPOD() {
               var day = date.getDate() + 1;
               var formattedMonth = ("0" + month).slice(-2);
               var formattedDay = ("0" + day).slice(-2);
-              
+
               var siteDite = 'https://apod.nasa.gov/apod/ap' + yearCut + '' + formattedMonth + '' + formattedDay + '.html';
 
               return siteDite;
