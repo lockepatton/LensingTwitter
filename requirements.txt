@@ -161,7 +161,7 @@ tweepy==3.8.0
 unicodecsv==0.14.1
 wcsaxes==0.9
 wcwidth==0.1.7
-Werkzeug==0.11.11
+Werkzeug==0.15.3
 widgetsnbextension==1.2.6
 wrapt==1.10.6
 xlrd==1.0.0
