@@ -128,7 +128,7 @@ PySocks==1.7.1
 pytest==2.9.2
 python-dateutil==2.5.3
 pytz==2016.6.1
-PyYAML==3.12
+PyYAML==5.1
 pyzmq==15.4.0
 QtAwesome==0.3.3
 qtconsole==4.2.1
