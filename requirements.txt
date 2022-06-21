@@ -1,5 +1,5 @@
 astropy==1.2.1
-numpy==1.11.1
+numpy==1.22.0
 tweepy==3.8.0
 scipy==0.18.1
 beautifulsoup4==4.6.0
